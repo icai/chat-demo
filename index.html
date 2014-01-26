@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Page Title</title>
+
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	
+	<script src="/socket.io/socket.io.js"></script>
+
+
+	<style>
+
+
+	/**
+	 * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
+	 * http://cssreset.com
+	 */
+	html, body, div, span, applet, object, iframe,
+	h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+	a, abbr, acronym, address, big, cite, code,
+	del, dfn, em, img, ins, kbd, q, s, samp,
+	small, strike, strong, sub, sup, tt, var,
+	b, u, i, center,
+	dl, dt, dd, ol, ul, li,
+	fieldset, form, label, legend,
+	table, caption, tbody, tfoot, thead, tr, th, td,
+	article, aside, canvas, details, embed, 
+	figure, figcaption, footer, header, hgroup, 
+	menu, nav, output, ruby, section, summary,
+	time, mark, audio, video {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		vertical-align: baseline;
+	}
+	/* HTML5 display-role reset for older browsers */
+	article, aside, details, figcaption, figure, 
+	footer, header, hgroup, menu, nav, section {
+		display: block;
+	}
+	body {
+		line-height: 1;
+	}
+	ol, ul {
+		list-style: none;
+	}
+	blockquote, q {
+		quotes: none;
+	}
+	blockquote:before, blockquote:after,
+	q:before, q:after {
+		content: '';
+		content: none;
+	}
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+
+
+	</style>
+
+	<style>
+	.layout{ width:960px; margin:0 auto;}
+	.main {padding-top:30px;}
+
+	.section { border-bottom:1px solid #ccc; margin-bottom: 10px;}
+	.section .hd { background:#3879D9; color:#fff; padding:5px;}
+	.section .bd { border:1px solid #ccc; padding:15px;}
+
+
+	.list { max-height:500px; width:300px; overflow: hidden; overflow-y:auto; }
+
+
+	</style>
+
+
+</head>
+
+   <body>
+
+   		<div class="layout">
+	        <h1>Socket IO DEMO</h1>
+
+	        <div class="main">
+		        <div class="section">
+					<div class="hd"><h2>ROOM</h2></div>
+					<div class="bd">
+				        <div id="setNickSpace">
+				        	Nickname: <input type="text"  id="nickname"/> <br/>
+				        	Room: <input type="text"  id="room"/> <button id="setNickName">Set</button>
+				        </div>
+				        <div id="chat" style="display: none;">
+					        <textarea id="textSend"></textarea>
+					        <button id="send">Send</button>
+				      	</div>
+				      	<div id="board" class="list"></div>
+
+					</div>
+		        </div>
+		        <div class="section" >
+		        	<div class="hd"><h2>Global</h2></div>
+		        	<div class="bd">
+						<textarea id="textSend"></textarea>
+				        <input type="button" name="chat" value="chat" id="global-chat" onclick='sendChat("CHAT!!!!");')>
+				        <div class="list">
+				        	
+				        </div>
+		        	</div>
+		        </div>   
+	        </div>
+   		</div>
+
+    </body>
+<script type="text/javascript">
+
+	  var socket = io.connect('http://localhost:3000');
+
+	  var socketIODemo = {
+	  		room: function(){
+
+	  			return {
+					init:function(){
+
+
+					}
+	  			}
+	  		},
+	  		global: function(){
+
+
+
+
+	  			return {
+					init:function(){
+
+
+					}
+	  			}
+	  		}
+
+
+
+
+	  }
+
+
+		function sendChat(message) {
+			socket.emit('chat', { text: 'message' });
+		}
+		socket.on('chat',function(data){
+			 console.log(data);
+		})
+
+  var chati = null;
+  $(document).ready(function(){
+  	$("#setNickName").click(function(){  
+  		$("#setNickSpace").hide(); 
+  		$("#chat").show();
+  		chati = new Chat;
+  		chati.Connect($("#nickname").val(), $("#room").val());
+  	} );
+  	$('textarea#textSend').bind('keypress', function(e) {
+        if(e.keyCode==13){
+        	sendMsg();
+        }
+	});
+  	
+  	$("#send").click(function()
+  	{
+  		sendMsg();
+  	});
+  	function sendMsg(){
+  		var m = $("#textSend").val();
+  		$("#textSend").val("");
+  		chati.Send(m);
+  	}
+  	
+  	var today = new Date();  
+	var offset = -(today.getTimezoneOffset()/60); 
+  	
+  });
+  
+  
+  function Chat(){
+  	this.socket = null;
+  	this.Nickname = "";
+  	this.Room = "";
+  	
+  	this.Connect = function(nick, room){ 
+  		socket =  socket || io.connect('http://localhost:3000');
+  		Nickname = nick;
+  		Room = room;
+  		//conectarse
+  		socket.on('connect',function (data) {
+	    	socket.emit('setNickAndRoom', {nick: nick, room: room}, function(response){
+	    		$("#board").append("<p>" + response.msg + "</p>");
+	    	});
+  		});
+  		//mensajes
+  		socket.on("message", function(msg, p, c){
+  			$("#board").append("<p>" + msg.nick + ": " + msg.msg + "</p>");
+  		});
+  	};
+  	
+  	this.Send = function Send (msg) {
+		socket.emit("message", {msg: msg, nick:  Nickname} , function(response) {
+			
+			$("#board").append("<p>" + Nickname + ": " + msg + "</p>");
+		});	
+	};
+  	
+  	
+  }
+  
+</script>
+</body>
+</html>
