@@ -6,7 +6,7 @@ var express = require('express'),
     logger = require('winston'),
     program = require('commander');
 
-    serv.listen(3000); // socket io
+
     
 //  
 // SETUP
@@ -27,13 +27,16 @@ if(program.args.length==1) {
     logger.warn("Defaulting to localhost.");
 }
 
-var port = 8080;
+var port = 3000;
 if(program.port) {
     logger.info("Setting port to " + program.port);
     port = program.port;
 }
-
 //app.listen(port);
+
+serv.listen(port); // socket io
+
+
 //app.server.listen(port);
 
 if(program.disableheartbeats) {
@@ -42,16 +45,14 @@ if(program.disableheartbeats) {
 
 io.set("log level", 0);
 
-
 //
 // LISTENERS
 //
 
+app.use('/', express.static(__dirname + '/publish'));
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
+  res.sendfile('index.html');
 });
-
-
 
 
 io.sockets.on('connection', function(socket) {

@@ -1,12 +1,30 @@
 {
-  "name": "socke.io chat demo",
-  "version": "0.1.0",
-  "description": "Socket.io chat demo",
+  "name": "chat-demo",
+  "version": "0.0.1",
+  "description": "socket.io model chat demo",
+  "main": "server.js",
+  "scripts": {
+    "test": "node test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/icai/chat-demo.git"
+  },
+  "keywords": [
+    "socket.io",
+    "model",
+    "chat"
+  ],
+  "author": "icai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/icai/chat-demo/issues"
+  },
   "dependencies": {
-    "express": "*",
-    "socket.io": "*",
-    "winston": "*",
-    "commander": "*",
-    "promise": "~3.2.0"
+    "socket.io": "~0.9.16",
+    "express": "~3.4.8",
+    "winston": "~0.7.2",
+    "commander": "~2.1.0"
   }
 }

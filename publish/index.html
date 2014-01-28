@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Socket IO DEMO</title>
+	<link rel="stylesheet" href="/css/all.css">
+	<script src="/js/jquery-1.9.1.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+</head>
+
+   <body>
+   		<div class="layout">
+	        <h1>Socket IO DEMO</h1>
+	        <div class="main">
+		        <div class="section">
+					<div class="hd"><h2>ROOM</h2></div>
+					<div class="bd">
+				        <div id="setNickSpace">
+				        	Nickname: <input type="text"  id="nickname"/> <br/>
+				        	Room: <input type="text"  id="room"/> <button id="setNickName">Set</button>
+				        </div>
+				        <div id="chat" style="display: none;">
+					        <textarea id="textSend"></textarea>
+					        <button id="send">Send</button>
+				      	</div>
+				      	<div id="board" class="list"></div>
+
+					</div>
+		        </div>
+		        <div class="section" >
+		        	<div class="hd"><h2>Global</h2></div>
+		        	<div class="bd">
+						<textarea id="textSend"></textarea>
+				        <input type="button" name="chat" value="chat" id="global-chat" onclick='sendChat("CHAT!!!!");')>
+				        <div class="list">
+				        	
+				        </div>
+		        	</div>
+		        </div>   
+	        </div>
+   		</div>
+   		<script src="/js/app.js"></script>
+</body>
+</html>
