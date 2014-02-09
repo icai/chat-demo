@@ -27,7 +27,7 @@ app.configure(function(){
     logger.info("Setting port to " + app.get('port'));
     app.use(express.favicon());
     app.use(express.logger('short'));
-    app.use(app.router);
+    app.use(app.routes);
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
